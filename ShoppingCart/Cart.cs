@@ -9,14 +9,21 @@ namespace ShoppingCart
     {
         public int Total { get; private set; }
 
+        protected IList<Book> books;
+
+        public Cart()
+        {
+            books = new List<Book>();
+        }
+
         public void Add(Book book)
         {
-            throw new NotImplementedException();
+            books.Add(book);
         }
 
         public void Checkout()
         {
-            throw new NotImplementedException();
+            Total = books.Sum(x => x.SellPrice);
         }
     }
 }
