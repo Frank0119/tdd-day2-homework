@@ -38,6 +38,9 @@ namespace ShoppingCart
                     case 3:
                         Total = books.Sum(x => x.SellPrice) * 0.9;
                         break;
+                    case 4:
+                        Total = books.Sum(x => x.SellPrice) * 0.8;
+                        break;
                     default:
                         break;
                 }
