@@ -24,7 +24,7 @@ namespace ShoppingCart
 
         public void Checkout()
         {
-            var distinct = books.Distinct().ToList();
+            var distinct = books.GroupBy(x => x.Id).Select(x => new { ID = x.Key, Count = x.Count() }).ToList();
             if (books.Count == distinct.Count)
             {
                 switch (books.Count)
