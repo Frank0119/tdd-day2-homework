@@ -7,13 +7,14 @@ namespace ShoppingCart
 {
     public class Cart
     {
-        public int Total { get; private set; }
+        public double Total { get; private set; }
 
         protected IList<Book> books;
 
         public Cart()
         {
             books = new List<Book>();
+            Total = 0;
         }
 
         public void Add(Book book)
@@ -23,7 +24,25 @@ namespace ShoppingCart
 
         public void Checkout()
         {
-            Total = books.Sum(x => x.SellPrice);
+            var distinct = books.Distinct().ToList();
+            if (books.Count == distinct.Count)
+            {
+                switch (books.Count)
+                {
+                    case 1:
+                        Total = books.Sum(x => x.SellPrice);
+                        break;
+                    case 2:
+                        Total = books.Sum(x => x.SellPrice) * 0.95;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+
+            }
         }
     }
 }
