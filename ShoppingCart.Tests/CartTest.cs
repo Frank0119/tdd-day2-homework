@@ -178,5 +178,34 @@ namespace ShoppingCart.Tests
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        /// 第一集買了一本，第二三集各買了兩本，預期結帳金額應等於其售價 100 * 3 * 0.9 + 100 * 2 * 0.95 = 460
+        /// </summary>
+        [TestMethod]
+        public void Test_add_3_diff_2_same_books_to_cart_then_checkout_total_should_be_equal_460()
+        {
+            // Arrange
+            var book_1 = new Book { Id = 1, Name = "Harry Potter and the Philosopher's Stone", SellPrice = 100 };
+            var book_2 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
+            var book_3 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
+            var book_4 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
+            var book_5 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
+            var expected = (book_1.SellPrice + book_2.SellPrice + book_3.SellPrice) * 0.9 + (book_4.SellPrice + book_5.SellPrice) * 0.95;
+
+            var target = new Cart();
+            target.Add(book_1);
+            target.Add(book_2);
+            target.Add(book_3);
+            target.Add(book_4);
+            target.Add(book_5);
+            target.Checkout();
+
+            // Act
+            var actual = target.Total;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
