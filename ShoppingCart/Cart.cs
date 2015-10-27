@@ -24,59 +24,48 @@ namespace ShoppingCart
 
         public void Checkout()
         {
-            var distinct = books.GroupBy(x => new { Id = x.Id, SellPrice = x.SellPrice }).Select(x => new GroupSet { ID = x.Key.Id, SellPrice = x.Key.SellPrice, Count = x.Count() }).ToList();
+            var distinct = books
+                .GroupBy(x => new { Id = x.Id, SellPrice = x.SellPrice })
+                .Select(x => new GroupSet { ID = x.Key.Id, SellPrice = x.Key.SellPrice, Count = x.Count() }).ToList();
             if (books.Count == distinct.Count)
             {
-                switch (books.Count)
-                {
-                    case 1:
-                        Total = books.Sum(x => x.SellPrice);
-                        break;
-                    case 2:
-                        Total = books.Sum(x => x.SellPrice) * 0.95;
-                        break;
-                    case 3:
-                        Total = books.Sum(x => x.SellPrice) * 0.9;
-                        break;
-                    case 4:
-                        Total = books.Sum(x => x.SellPrice) * 0.8;
-                        break;
-                    case 5:
-                        Total = books.Sum(x => x.SellPrice) * 0.75;
-                        break;
-                    default:
-                        break;
-                }
+                Total = books.Sum(x => x.SellPrice) * this.getDiscount(books.Count);
             }
             else
             {
-                Total = recursivePreferential(distinct);
+                while (distinct.Count > 0)
+                {
+                    Total += preferential(ref distinct);
+                }
             }
         }
 
-        private double recursivePreferential(List<GroupSet> distinct)
+        private double getDiscount(int booksCount)
+        {
+            var result = 1.0;
+            switch (booksCount)
+            {
+                    case 2:
+                        result = 0.95;
+                        break;
+                    case 3:
+                        result = 0.9;
+                        break;
+                    case 4:
+                        result = 0.8;
+                        break;
+                    case 5:
+                        result = 0.75;
+                        break;
+            }
+
+            return result;
+        }
+
+        private double preferential(ref List<GroupSet> distinct)
         {
             var total = 0d;
-            switch (distinct.Count())
-            {
-                case 1:
-                    total = distinct.Sum(x => x.SellPrice);
-                    break;
-                case 2:
-                    total = distinct.Sum(x => x.SellPrice) * 0.95;
-                    break;
-                case 3:
-                    total = distinct.Sum(x => x.SellPrice) * 0.9;
-                    break;
-                case 4:
-                    total = distinct.Sum(x => x.SellPrice) * 0.8;
-                    break;
-                case 5:
-                    total = distinct.Sum(x => x.SellPrice) * 0.75;
-                    break;
-                default:
-                    break;
-            }
+            total = distinct.Sum(x => x.SellPrice) * this.getDiscount(distinct.Count);
 
             for (int i = 0; i < distinct.Count; i++)
             {
@@ -84,14 +73,8 @@ namespace ShoppingCart
             }
 
             distinct = distinct.Where(x => x.Count > 0).ToList();
-            if (distinct.Count > 0)
-            {
-                return total + recursivePreferential(distinct);
-            }
-            else
-            {
-                return total;
-            }
+
+            return total;
         }
 
         private class GroupSet
