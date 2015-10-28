@@ -8,25 +8,6 @@ namespace ShoppingCart.Tests
     [TestClass]
     public class CartTest
     {
-        private static IList<Book> _books;
-
-        [ClassInitialize()]
-        public static void CartTestInitialize(TestContext TestContext)
-        {
-            _books = new List<Book>();
-            _books.Add(new Book { Id = 1, Name = "Harry Potter and the Philosopher's Stone", SellPrice = 100 });
-            _books.Add(new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 });
-            _books.Add(new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 });
-            _books.Add(new Book { Id = 4, Name = "Harry Potter and the Goblet of Fire", SellPrice = 100 });
-            _books.Add(new Book { Id = 5, Name = "Harry Potter and the Order of the Phoenix", SellPrice = 100 });
-        }
-
-        [ClassCleanup()]
-        public static void CartTestCleanup()
-        {
-            _books = null;
-        }
-
         /// <summary>
         /// 加入一本書籍至購物車中並結帳，預期結帳金額應等於其售價 100
         /// </summary>
@@ -35,7 +16,7 @@ namespace ShoppingCart.Tests
         {
             // Arrange
             var book = new Book { Id = 1, Name = "Harry Potter and the Philosopher's Stone", SellPrice = 100 };
-            var expected = book.SellPrice;
+            var expected = 100;
 
             var target = new Cart();
             target.Add(book);
@@ -57,7 +38,7 @@ namespace ShoppingCart.Tests
             // Arrange
             var book_1 = new Book { Id = 1, Name = "Harry Potter and the Philosopher's Stone", SellPrice = 100 };
             var book_2 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
-            var expected = (book_1.SellPrice + book_2.SellPrice) * 0.95;
+            var expected = 190;
 
             var target = new Cart();
             target.Add(book_1);
@@ -81,7 +62,7 @@ namespace ShoppingCart.Tests
             var book_1 = new Book { Id = 1, Name = "Harry Potter and the Philosopher's Stone", SellPrice = 100 };
             var book_2 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
             var book_3 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
-            var expected = (book_1.SellPrice + book_2.SellPrice + book_3.SellPrice) * 0.9;
+            var expected = 270;
 
             var target = new Cart();
             target.Add(book_1);
@@ -107,7 +88,7 @@ namespace ShoppingCart.Tests
             var book_2 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
             var book_3 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
             var book_4 = new Book { Id = 4, Name = "Harry Potter and the Goblet of Fire", SellPrice = 100 };
-            var expected = (book_1.SellPrice + book_2.SellPrice + book_3.SellPrice + book_4.SellPrice) * 0.8;
+            var expected = 320;
 
             var target = new Cart();
             target.Add(book_1);
@@ -135,7 +116,7 @@ namespace ShoppingCart.Tests
             var book_3 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
             var book_4 = new Book { Id = 4, Name = "Harry Potter and the Goblet of Fire", SellPrice = 100 };
             var book_5 = new Book { Id = 5, Name = "Harry Potter and the Order of the Phoenix", SellPrice = 100 };
-            var expected = (book_1.SellPrice + book_2.SellPrice + book_3.SellPrice + book_4.SellPrice + book_5.SellPrice) * 0.75;
+            var expected = 375;
 
             var target = new Cart();
             target.Add(book_1);
@@ -163,7 +144,7 @@ namespace ShoppingCart.Tests
             var book_2 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
             var book_3 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
             var book_4 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
-            var expected = (book_1.SellPrice + book_2.SellPrice + book_3.SellPrice) * 0.9 + book_4.SellPrice;
+            var expected = 370;
 
             var target = new Cart();
             target.Add(book_1);
@@ -191,7 +172,7 @@ namespace ShoppingCart.Tests
             var book_3 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
             var book_4 = new Book { Id = 2, Name = "Harry Potter and the Chamber of Secrets", SellPrice = 100 };
             var book_5 = new Book { Id = 3, Name = "Harry Potter and the Prisoner of Azkaban", SellPrice = 100 };
-            var expected = (book_1.SellPrice + book_2.SellPrice + book_3.SellPrice) * 0.9 + (book_4.SellPrice + book_5.SellPrice) * 0.95;
+            var expected = 460;
 
             var target = new Cart();
             target.Add(book_1);
